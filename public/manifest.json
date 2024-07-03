@@ -1,0 +1,62 @@
+{
+  "name": "Project 101",
+  "description": "Learning all about Chrome Extensions Manifest Version 3!",
+  "version": "3.1.0",
+  "manifest_version": 3,
+  "icons": {
+    "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1K9V6OGC65Qc285uoYDv8LBRLPsM7xgFxC1euORX7PLCdvl3Zx6pkeMZGGPFAt3wbbuwgQSljdRzoYRdsxyAp+538HSjQzYzJL+WjSFVCuWLTNFED8obk8GaSae/x/FcpxZu7GU6HrZcjFbU1JLIvnKibenaksMKzmlSenpWXoAFI5hGCZ7ZOT5LW4jjkt6xhZ2tUrJVYUJG0OA7zPYWIcVR6t7QqBE2+NKqlDd6/HpFP8JTLPE4/oZWjHadhfMvxrGx89lphstW0sXnQIZPI/goZ/sw6ESBJUOPlttVllXWX0RaZ7PYoY0vzgUGIvupgzXFddhm8JkwSHClQI4tKQIDAQAB",
+  "oauth2": {
+    "client_id": "380623597526-9j3gs5vh9obbcbv3il2rsm4h1dvbtc2s.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/contacts.readonly"
+    ]
+  },
+  "background": {
+      "service_worker": "background.js"
+  },
+  "action": {
+     
+      "default_icon": {
+        "19":"icons/favicon.png"
+          
+      },
+      "default_title": "Project101"
+  },
+  "options_page": "index.html",
+  
+  "permissions": [
+      "storage",
+      "activeTab",
+      "scripting",
+      "tabs"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "run_at": "document_start",
+      "js": ["inject.js"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://*;"
+  },
+ 
+  "chrome_url_overrides": {
+        "newtab": "index.html"
+      },
+
+      "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://music.yandex.ru/;"
+    }
+}
+
+
+
+
+
+
