@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   height: 16rem;
 
   border-radius: 20px;
-
+  
   @media screen and (max-width: 1600px) {
     width: 13rem;
     height: 13rem;

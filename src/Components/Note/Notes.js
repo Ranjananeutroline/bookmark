@@ -264,8 +264,9 @@ margin-bottom:0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-gap:0.5rem;
-font-size:0.9rem;
+    gap:0.5rem;
+    font-size:0.9rem;
+    
     @media screen and (max-width:1600px){
       height: 35px;
       font-size:0.83rem;
@@ -314,6 +315,8 @@ font-size:0.9rem;
   .textfield:nth-child(4n + 4).active,
   .textfield:nth-child(4n + 5).active {
     filter: brightness(0.6);
+    box-shadow: rgb(91, 91, 91) 1px 2px 5px inset;
+    
   }
   @media screen and (min-width:620px) and (max-width:755px){
     ${

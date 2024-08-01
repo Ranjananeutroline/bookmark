@@ -49,6 +49,7 @@ const Rightsection = styled.div`
       text-align: center;
     }
   }
+   
   textarea {
     scrollbar-width: 0.2rem;
 
