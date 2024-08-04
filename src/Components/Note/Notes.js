@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BsSearch } from "react-icons/bs";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
@@ -315,7 +315,7 @@ margin-bottom:0.5rem;
   .textfield:nth-child(4n + 4).active,
   .textfield:nth-child(4n + 5).active {
     filter: brightness(0.6);
-    box-shadow: rgb(91, 91, 91) 1px 2px 5px inset;
+    box-shadow: rgb(91 91 91 / 25%) 1px 2px 4px inset;
     
   }
   @media screen and (min-width:620px) and (max-width:755px){
@@ -396,14 +396,20 @@ export default function Notes({
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
     if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
+      console.log("Trying to focus:", anchorRef.current);
+      if (anchorRef.current) {
+        anchorRef.current.focus();
+      } else {
+        console.error("anchorRef.current is null");
+      }
     }
-
     prevOpen.current = open;
   }, [open]);
 
   // console.log(noteDateFromDB);
   const [activeData, setActiveData] = useState({});
+  const [isAddingNote, setIsAddingNote] = useState(false);
+  const [focusTitleInput, setFocusTitleInput] = useState(false);
 
   const sendToRightSection = (
     notesId,
@@ -451,6 +457,19 @@ export default function Notes({
       // setFilteredResults(notes);
     }
   };
+
+  const handleAddNote = () => {
+    addNote();
+    setIsAddingNote(true);
+  };
+
+  useEffect(() => {
+    const inputElement = document.getElementById('note-title-input');
+    console.log("Element retrieved:", inputElement);
+    if (isAddingNote && !openMsg && inputElement) {
+      inputElement.focus();
+    }
+  }, [openMsg, isAddingNote]);
 
   return (
     <div className={classes.root}>
@@ -894,7 +913,7 @@ export default function Notes({
                               ? { fontSize: "0.9rem", color: "black" }
                               : { fontSize: "0.9rem", color: "#3A0404" }
                           }
-                          onClick={addNote}
+                          onClick={handleAddNote}
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
                              e.preventDefault();
@@ -925,6 +944,8 @@ export default function Notes({
                           onUpdateNote={onUpdateNote}
                           onUpdatefromDb={onUpdatefromDb}
                           getNotesDataDb={getNotesDataDb}
+                          focusTitleInput={focusTitleInput}
+                          isAddingNote={isAddingNote}
                         />
                       </Grid>
                     </NoteContainer>

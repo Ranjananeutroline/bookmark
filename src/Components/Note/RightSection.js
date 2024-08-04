@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import { Container } from "@mui/material";
 import notesLine from "../../Assets/notesLine.png";
@@ -108,7 +108,19 @@ function RightSection({
   onUpdatefromDb,
   noteDateFromDB,
   getNotesDataDb,
+  focusTitleInput,
+  isAddingNote
 }) {
+  const titleInputRef = useRef(null);
+
+  useEffect(() => {
+    console.log("isAddingNote:", isAddingNote);
+    if (titleInputRef.current && isAddingNote) {
+      titleInputRef.current.focus();
+    }
+  }, [isAddingNote]);
+
+
   const onEditField = (field, value) => {
     onUpdateNote({
       ...getActiveNote,
@@ -154,9 +166,10 @@ function RightSection({
           <div className="note-title-button-div">
             <div className="notes-title">
               <input
-                type="text"
-                id="noteTitle"
-                placeholder="Note Title"
+               ref={titleInputRef}
+               type="text"
+               id="note-title-input"
+               placeholder={isAddingNote ? "Add Title" : "Note Title"}
                 value={noteTitle}
                 onChange={onchangeTitle}
                 style={{
@@ -220,9 +233,10 @@ function RightSection({
           <div className="note-title-button-div">
             <div className="notes-title">
               <input
-                type="text"
-                id="noteTitle"
-                placeholder="Note Title"
+              ref={titleInputRef}
+              type="text"
+              id="note-title-input"
+              placeholder={isAddingNote ? "Add Title" : "Note Title"}
                 value={
                   getActiveNote === undefined
                     ? ""
