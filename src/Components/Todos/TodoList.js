@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect, useRef  } from "react";
 import Button from "@material-ui/core/Button";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
@@ -261,6 +261,8 @@ export default function ToDoList() {
   const classes = useStyles();
   const [editMode, setEditMode] = useState("");
   const [taskName, setTaskName] = useState(""); // State for task name
+  const [highlightedTask, setHighlightedTask] = useState(null); // State for highlighted task
+  const [taskPriorities, setTaskPriorities] = useState({}); // Keeps track of task priorities
 
   const handleEditMode = (e) => {
     setEditMode(e.target.value);
@@ -270,6 +272,15 @@ export default function ToDoList() {
   const [count, setCount] = React.useState();
 
   const anchorRef = React.useRef(null);
+
+  const updateTaskPriority = (taskName, priority) => {
+    setTaskPriorities(prevPriorities => ({
+      ...prevPriorities,
+      [taskName]: priority
+    }));
+  };
+
+  
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -527,6 +538,8 @@ const handleNotify = (task) => {
   setReminder(true);
 };
 
+
+
   return (
     <>
       <Root>
@@ -679,7 +692,16 @@ const handleNotify = (task) => {
                                         }}
                                       />
 
-                                      <div className={classes.checkBoxData}>
+                                      <div className={classes.checkBoxData}
+                                        style={{
+                                          textDecoration: 'underline',
+                                          textDecorationColor: 
+                                            taskPriorities[items.List] === 'high' ? 'red' :
+                                            taskPriorities[items.List] === 'medium' ? 'yellow' :
+                                            taskPriorities[items.List] === 'low' ? 'green' : 'transparent',
+                                          textDecorationThickness: '2px', // Adjust thickness if needed
+                                          
+                                        }}>
                                         <div style={{ marginBottom: "0.5rem" }}>
                                           {items.list !== "" ? items.List : ""}
                                         </div>
@@ -872,7 +894,9 @@ const handleNotify = (task) => {
                             </Button>
                           </div>
                         </div>
-                        {reminder && <ReminderTodo handleReminderClose={handleReminderClose} taskName={taskName} />}
+                        {reminder && <ReminderTodo handleReminderClose={handleReminderClose} taskName={taskName} 
+                        updateTaskPriority={updateTaskPriority}
+                        />}
                     
                         <SignUpAlertPopMsg
                           open={openMsg}
