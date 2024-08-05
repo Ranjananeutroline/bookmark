@@ -37,7 +37,8 @@ padding:0rem 1.5rem 1rem 1.5rem;
   }
 }
 `;
-const ReminderTodo = ({handleReminderClose}) => {
+const ReminderTodo = ({handleReminderClose, taskName}) => {
+  console.log("ReminderTodo Task Name:", taskName); // Debugging line
   return (
     <>
       <StyledDialog
@@ -53,7 +54,7 @@ const ReminderTodo = ({handleReminderClose}) => {
            
             <Grid item xs={12}>
               <Typography>Task name</Typography>
-              <TextField size="small" fullWidth />
+              <TextField size="small" fullWidth value={taskName} />
             </Grid>
 
             <Grid item xs={12}>

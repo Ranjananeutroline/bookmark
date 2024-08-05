@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import Button from "@material-ui/core/Button";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
@@ -260,6 +260,7 @@ const Container = styled.div`
 export default function ToDoList() {
   const classes = useStyles();
   const [editMode, setEditMode] = useState("");
+  const [taskName, setTaskName] = useState(""); // State for task name
 
   const handleEditMode = (e) => {
     setEditMode(e.target.value);
@@ -520,18 +521,12 @@ const handleReminderClose=()=>{
   setReminder(false)
 }
 
-const handleNotify=()=>{
-  if(GoogleId)
-  {
-   setReminder(true) 
-  }
-  else
-  {
-    // setopenMsg(true);
-    setReminder(true) 
-  
-  }
-}
+const handleNotify = (task) => {
+  console.log("Task Name:", task); // Debugging line
+  setTaskName(task); // Set the task name when notification is triggered
+  setReminder(true);
+};
+
   return (
     <>
       <Root>
@@ -691,7 +686,7 @@ const handleNotify=()=>{
 
                                         <span>
                                           <div className="edit">
-                                          <IoNotifications  className={classes.deleteTodo} onClick={handleNotify}/>
+                                          <IoNotifications  className={classes.deleteTodo}  onClick={() => handleNotify(items.List)}/>
                                             {showIcon ? (
                                               <>
                                                 <FiEdit
@@ -877,7 +872,7 @@ const handleNotify=()=>{
                             </Button>
                           </div>
                         </div>
-                       { reminder? <ReminderTodo handleReminderClose={handleReminderClose}/>:" "}
+                        {reminder && <ReminderTodo handleReminderClose={handleReminderClose} taskName={taskName} />}
                     
                         <SignUpAlertPopMsg
                           open={openMsg}
