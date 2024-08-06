@@ -46,7 +46,7 @@ const Rightsection = styled.div`
     margin: 25px auto 0px auto;
   
     input[placeholder] {
-      text-align: center;
+      text-align: left;
     }
   }
    
@@ -54,7 +54,7 @@ const Rightsection = styled.div`
     scrollbar-width: 0.2rem;
 
     line-height: 1.7;
-    margin-top: 1.2rem;
+    margin-top: 2.25rem;
     
   }
 
@@ -173,10 +173,11 @@ function RightSection({
                 value={noteTitle}
                 onChange={onchangeTitle}
                 style={{
-                  backgroundColor: "#fcf4b1",
+                  backgroundColor: isAddingNote ? "#c4c4c436" : "#c4c4c436",
                   border: "none",
                   outline: "none",
                   fontSize: "1rem",
+                  padding: "5px 5px 3px 5px",
                 }}
               /> </div>
               <div>
@@ -251,9 +252,10 @@ function RightSection({
                     : ""
                 }
                 style={{
-                  backgroundColor: "#fcf4b1",
+                  backgroundColor: isAddingNote ? "#c4c4c436" : "#c4c4c436",
                   border: "none",
                   outline: "none",
+                  padding: "5px 5px 3px 5px",
                 }}
               />
             </div>

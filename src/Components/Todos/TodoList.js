@@ -186,17 +186,22 @@ const useStyles = makeStyles((theme) => ({
   },
   addInputDiv: {
     backgroundColor: "#F4F1F1",
-
+    boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
+    
     display: "flex",
     alignItems: "center",
     borderRadius: "20px",
     paddingLeft: "1rem",
     paddingTop: "0.2rem",
     paddingBottom: "0.2rem",
+    transition: "width 0.3s ease", // Smooth transition effect
+    "&:hover": {
+      backgroundColor: "#e3e3e3",
+    },
   },
   addTaskFiled: {
     backgroundColor: "transparent",
-    padding: "0.5rem 0.2rem 0.5rem 1rem",
+    padding: "0.5rem 0.2rem 0.5rem 0.5rem",
     outline: "none",
     border: "0px solid #F4F1F1",
     width: "100%",
@@ -263,6 +268,7 @@ export default function ToDoList() {
   const [taskName, setTaskName] = useState(""); // State for task name
   const [highlightedTask, setHighlightedTask] = useState(null); // State for highlighted task
   const [taskPriorities, setTaskPriorities] = useState({}); // Keeps track of task priorities
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   const handleEditMode = (e) => {
     setEditMode(e.target.value);
@@ -537,7 +543,15 @@ const handleNotify = (task) => {
   setTaskName(task); // Set the task name when notification is triggered
   setReminder(true);
 };
+const handleInputFocus = () => {
+  setIsInputFocused(true);
+};
 
+const handleInputBlur = () => {
+  if (!toDoList) {
+    setIsInputFocused(false);
+  }
+};
 
 
   return (
@@ -692,18 +706,17 @@ const handleNotify = (task) => {
                                         }}
                                       />
 
-                                      <div className={classes.checkBoxData}
-                                        style={{
-                                          textDecoration: 'underline',
-                                          textDecorationColor: 
-                                            taskPriorities[items.List] === 'high' ? 'red' :
-                                            taskPriorities[items.List] === 'medium' ? 'yellow' :
-                                            taskPriorities[items.List] === 'low' ? 'green' : 'transparent',
-                                          textDecorationThickness: '2px', // Adjust thickness if needed
-                                          
+                                      <div className={classes.checkBoxData}>
+                                      <div style={{ marginBottom: "0.5rem" }}>
+                                        {items.list !== "" ? items.List : ""}
+                                        <span style={{
+                                          color: 'red',
+                                          fontWeight: 'bold'
                                         }}>
-                                        <div style={{ marginBottom: "0.5rem" }}>
-                                          {items.list !== "" ? items.List : ""}
+                                          {taskPriorities[items.List] === 'high' ? ' !!!' :
+                                            taskPriorities[items.List] === 'medium' ? ' !!' :
+                                            taskPriorities[items.List] === 'low' ? ' !' : ''}
+                                          </span>
                                         </div>
 
                                         <span>
@@ -779,7 +792,9 @@ const handleNotify = (task) => {
                           </Container>
 
                           <div className={classes.addNodeDiv}>
-                            <div className={classes.addInputDiv}>
+                            <div className={classes.addInputDiv}
+                            style={{ width: isInputFocused ? "200px" : "105px" }} // Conditional style
+                            >
                               {updateTodoList.List ||
                               updateTodoList.ToDoListId ? (
                                 <>
@@ -830,12 +845,14 @@ const handleNotify = (task) => {
                                 />
                               ) : (
                                 <input
-                                  type="text"
-                                  className={classes.addTaskFiled}
-                                  placeholder="Add New Task.."
-                                  onChange={handleChangeTodo}
-                                  name="todo"
-                                  value={toDoList}
+                                type="text"
+                                className={classes.addTaskFiled}
+                                placeholder="New Task.."
+                                onFocus={handleInputFocus}
+                                onBlur={handleInputBlur}
+                                onChange={handleChangeTodo}
+                                name="todo"
+                                value={toDoList}
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                       submitToDoList();

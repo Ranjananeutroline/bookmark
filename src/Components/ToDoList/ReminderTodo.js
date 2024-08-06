@@ -29,13 +29,14 @@ const TopContainer = styled.div`
   }
 `;
 const BottomContainer = styled.div`
-padding:0rem 1.5rem 1rem 1.5rem;
+padding:0rem 1rem 1rem 1rem;
 .btns{
   background-color:#7CC4F5;
   color:#fff;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   :hover
   {
-    background-color:#7CC4F5;
+    background-color:#7cc4f5d9;
   }
 }
 `;
@@ -91,9 +92,18 @@ const DropdownItem = styled.div`
 const ReminderTodo = ({ handleReminderClose, taskName, updateTaskPriority }) => {
   const [priority, setPriority] = useState(''); // Default 
   const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
+  const [taskNameError, setTaskNameError] = useState('');
+  const [reminderDateError, setReminderDateError] = useState('');
 
   const handleDropdownToggle = () => {
     setDropdownOpen(prev => !prev);
+  };
+  const handleTaskNameChange = (e) => {
+    setTaskNameError(''); // Clear error when user types in the field
+  };
+
+  const handleReminderDateChange = (e) => {
+    setReminderDateError(''); // Clear error when user types in the field
   };
 
   const handleSelect = (selectedPriority) => {
@@ -102,8 +112,26 @@ const ReminderTodo = ({ handleReminderClose, taskName, updateTaskPriority }) => 
   };
 
   const handleSubmit = () => {
-    updateTaskPriority(taskName, priority); // Call the function to update priority
-    handleReminderClose(); // Close the reminder
+    // Reset errors
+    setTaskNameError('');
+    setReminderDateError('');
+
+    // Basic validation
+    if (!taskName) {
+      setTaskNameError('Task name is required');
+      return;
+    }
+
+    // Assuming you have a reminder date field
+    const reminderDate = document.querySelector('input[type="date"]').value;
+    if (!reminderDate) {
+      setReminderDateError('Reminder date is required');
+      return;
+    }
+
+    // If validation passes, call the update function
+    updateTaskPriority(taskName, priority);
+    handleReminderClose();
   };
 
   return (
@@ -121,12 +149,26 @@ const ReminderTodo = ({ handleReminderClose, taskName, updateTaskPriority }) => 
            
             <Grid item xs={12}>
               <Typography>Task name</Typography>
-              <TextField size="small" fullWidth value={taskName} />
+              <TextField
+                size="small"
+                fullWidth
+                value={taskName}
+                error={!!taskNameError}
+                helperText={taskNameError}
+                onChange={handleTaskNameChange}
+              />
             </Grid>
 
             <Grid item xs={12}>
               <Typography>Set Reminder</Typography>
-              <TextField size="small" fullWidth type="date" />
+              <TextField
+                size="small"
+                fullWidth
+                type="date"
+                error={!!reminderDateError}
+                helperText={reminderDateError}
+                onChange={handleReminderDateChange}
+              />
             </Grid>
             
 

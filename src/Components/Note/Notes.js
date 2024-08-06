@@ -63,8 +63,8 @@ const NoteContainer = styled.div`
   text-align: center;
 
   @media screen and (max-width:1600px){
-    width: 37.5rem;
-    height: 23.75rem;
+    width: 40rem;
+    height: 25rem;
   }
   @media screen and (max-width:525px){
     width: 130%;
@@ -167,12 +167,13 @@ margin-bottom:0.5rem;
     background-color: white;
     border-radius: 20px;
     // position: fix;
-    width: 10rem;
+    width: 6rem;
     margin-top: 1.5rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
 
     @media screen and (max-width:1600px){
-      width: 8.5rem;
+      width: 6rem;
       font-size: 1rem;
       margin-top: 0.3rem;
      
@@ -189,7 +190,7 @@ margin-bottom:0.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-
+    padding: 0 5px;
     text-decoration: none;
     border: none;
     text-align: center;
@@ -197,7 +198,7 @@ margin-bottom:0.5rem;
   }
   .eachItem {
    
-    height:15rem;
+    height:16.3rem;
     overflow-y: auto;
     ::-webkit-scrollbar {
       /* display: none; */
@@ -255,7 +256,7 @@ margin-bottom:0.5rem;
     border-radius: 5px;
     margin-top: 6px;
     border: 1px solid #d4f3c5;
-    box-shadow: 0px 4px 4px rgba(61, 60, 60, 0.25);
+    box-shadow: 0px 2px 2px rgba(61, 60, 60, 0.25);
     overflow: hidden;
     margin-bottom: 2px;
     text-align: left;
@@ -920,7 +921,7 @@ export default function Notes({
                             }
                           }}
                         >
-                          <FcPlus className="add-butn" /> Add Note
+                          <FcPlus className="add-butn" /> Note
                         </Button>
                       </Grid>
                       <Grid item lg={7} className="note-right">
