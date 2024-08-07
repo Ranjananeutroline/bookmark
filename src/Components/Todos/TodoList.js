@@ -279,6 +279,8 @@ export default function ToDoList() {
   const [taskPriorities, setTaskPriorities] = useState({}); // Keeps track of task priorities
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [inputWidth, setInputWidth] = useState("105px");
+   const [isListEmpty, setIsListEmpty] = useState(false); // New state for empty list message
+   const [clickTodo, setclickTodo] = useState([]);
 
   const handleEditMode = (e) => {
     setEditMode(e.target.value);
@@ -311,7 +313,7 @@ export default function ToDoList() {
   };
 
   const [toDoList, setToDoList] = useState("");
-  const [clickTodo, setclickTodo] = useState([]);
+
   let [values, setData] = useState([]);
 
   const handleChangeTodo = (e) => {
@@ -502,6 +504,8 @@ export default function ToDoList() {
         .delete(api+"/todo/alldelete/" + GoogleId)
         .then((res) => {
           console.log("delete all " + res);
+          setclickTodo([]); // Clear the todo list
+          setIsListEmpty(true); // Set to true to indicate the list is empty
         })
         .catch((err) => {
           console.log(err);
@@ -514,6 +518,8 @@ export default function ToDoList() {
       console.log(items);
       localStorage.setItem("todo-app", JSON.stringify(items));
       setclickTodo(JSON.parse(localStorage.getItem("todo-app")));
+      setclickTodo(items); // Correct function call
+      setIsListEmpty(items.length === 0); // Set to true if the list is empty
     }
     getTodoList();
   };
@@ -708,9 +714,10 @@ const handleInputBlur = () => {
                         <div className={classes.DataMianDiv}>
                           <Container>
                             <div className="eachItem">
-                              {clickTodo.map((items, index) => {
+                            {clickTodo.length > 0 ? (
+                               clickTodo.map((items, index) => {
                                 return (
-                                  <div className={classes.checkBoxx}>
+                                  <div className={classes.checkBoxx}  key={index}>
                                     <div
                                       className={
                                         classes.checkBoxDataTimeMainDiv
@@ -805,8 +812,13 @@ const handleInputBlur = () => {
                                       </div>
                                     </div>
                                   </div>
-                                );
-                              })}
+                                 );
+                                })
+                              ) : (
+                                <div
+                                style={{textAlign:"left", fontSize:"16px", padding:"1rem"}}
+                                >No list to display</div>
+                              )}
                             </div>
                           </Container>
 
