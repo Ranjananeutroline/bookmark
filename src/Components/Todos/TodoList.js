@@ -728,7 +728,7 @@ const handleInputBlur = () => {
                                       <div style={{ marginBottom: "0.5rem" }}>
                                         {items.list !== "" ? items.List : ""}
                                         <span style={{
-                                          color: 'red',
+                                          color: '#E50914',
                                           fontWeight: 'bold',
                                           marginLeft: '0.5rem'
                                         }}>
