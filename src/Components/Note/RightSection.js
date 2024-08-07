@@ -38,12 +38,13 @@ const Rightsection = styled.div`
   }
   .notes-title {
     text-indent: 15px;
-
+    text-align: left;
+    width: 100%;
     // margin-top: 40px;
     font-size: 1.2rem;
     color: #181616;
     font-weight: 600;
-    margin: 25px auto 0px auto;
+    margin: 25px 0;
   
     input[placeholder] {
       text-align: left;
@@ -54,7 +55,7 @@ const Rightsection = styled.div`
     scrollbar-width: 0.2rem;
 
     line-height: 1.7;
-    margin-top: 2.25rem;
+    margin-top: 0.7rem;
     
   }
 

@@ -22,6 +22,7 @@ import { IoListCircleSharp } from "react-icons/io5";
 import SignUpAlertPopMsg from "../Home/SignUpAlertPopMsg";
 import styled from "styled-components";
 import ReminderTodo from "../ToDoList/ReminderTodo";
+import { MdOutlineSubdirectoryArrowLeft } from "react-icons/md";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -192,6 +193,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     borderRadius: "20px",
     paddingLeft: "1rem",
+    paddingRight: "1rem",
     paddingTop: "0.2rem",
     paddingBottom: "0.2rem",
     transition: "width 0.3s ease", // Smooth transition effect
@@ -224,6 +226,11 @@ const useStyles = makeStyles((theme) => ({
     color: "#ed645a",
     display: "none",
   },
+  EnterIcon:{
+    fontSize: "20px",
+    color: "blue",
+    pointer: "cursor",
+  }
 }));
 const Root = styled.div`
   .edit {
@@ -242,6 +249,7 @@ const Root = styled.div`
       width: 19rem;
     }
   }
+    
 `;
 
 const Container = styled.div`
@@ -270,6 +278,7 @@ export default function ToDoList() {
   const [highlightedTask, setHighlightedTask] = useState(null); // State for highlighted task
   const [taskPriorities, setTaskPriorities] = useState({}); // Keeps track of task priorities
   const [isInputFocused, setIsInputFocused] = useState(false);
+  
 
   const handleEditMode = (e) => {
     setEditMode(e.target.value);
@@ -338,6 +347,7 @@ export default function ToDoList() {
             console.log(err);
           });
         setToDoList("");
+        setIsInputFocused(false);
         getTodoList();
       }
     } else {
@@ -350,6 +360,7 @@ export default function ToDoList() {
         values.push(newValue);
         updateUrl(values);
         setToDoList("");
+        setIsInputFocused(false);
         setCount(values.length);
         setopenMsg(true);
       }
@@ -793,76 +804,87 @@ const handleInputBlur = () => {
                           </Container>
 
                           <div className={classes.addNodeDiv}>
-                            <div className={classes.addInputDiv}
-                            style={{ width: isInputFocused ? "210px" : "105px" }} // Conditional style
-                            >
-                              {updateTodoList.List ||
-                              updateTodoList.ToDoListId ? (
-                                <>
-                                  <FiEdit
-                                    style={{
-                                      color: "green",
-                                      fontSize: "0.9rem",
-                                    }}
-                                    onClick={() => {
-                                      updateTodoDb(
-                                        updateTodoList.ToDoListId,
-                                        updateTodoList.ProfileId,
-                                        updateTodoList.List,
-                                        updateTodoList.id
-                                      );
-                                      handleAdd();
-                                    }}
-                                  />
-                                </>
-                              ) : (
-                                <IoAddCircleSharp
-                                  className={classes.AddIcon}
-                                  onClick={submitToDoList}
-                                />
-                              )}
-
-                              {updateTodoList.List ||
-                              updateTodoList.ToDoListId ? (
-                                <input
-                                  id="updateTodoList"
-                                  type="text"
-                                  className={classes.editTaskFiled}
-                                  // value={updateTodoList.List}
-                                  value={editMode}
-                                  onChange={handleEditMode}
-                                  name="todo"
-                                  onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                      updateTodoDb(
-                                        updateTodoList.ToDoListId,
-                                        updateTodoList.ProfileId,
-                                        updateTodoList.List,
-                                        updateTodoList.id
-                                      );
-                                      handleAdd();
-                                    }
+                          <div
+                            className={classes.addInputDiv}
+                            style={{
+                              width: isInputFocused ? "220px" : "105px",
+                            }} // Conditional style
+                          >
+                            {updateTodoList.List ||
+                            updateTodoList.ToDoListId ? (
+                              <>
+                                <FiEdit
+                                  style={{
+                                    color: "green",
+                                    fontSize: "0.9rem",
+                                  }}
+                                  onClick={() => {
+                                    updateTodoDb(
+                                      updateTodoList.ToDoListId,
+                                      updateTodoList.ProfileId,
+                                      updateTodoList.List,
+                                      updateTodoList.id
+                                    );
+                                    handleAdd();
                                   }}
                                 />
-                              ) : (
-                                <input
+                              </>
+                            ) : (
+                              <IoAddCircleSharp
+                                className={classes.AddIcon}
+                                onClick={submitToDoList}
+                              />
+                            )}
+
+                            {updateTodoList.List ||
+                            updateTodoList.ToDoListId ? (
+                              <input
+                                id="updateTodoList"
                                 type="text"
-                                className={classes.addTaskFiled}
-                                placeholder="New Task.."
-                                onFocus={handleInputFocus}
-                                onBlur={handleInputBlur}
-                                onChange={handleChangeTodo}
+                                className={classes.editTaskFiled}
+                                value={editMode}
+                                onChange={handleEditMode}
                                 name="todo"
-                                value={toDoList}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    updateTodoDb(
+                                      updateTodoList.ToDoListId,
+                                      updateTodoList.ProfileId,
+                                      updateTodoList.List,
+                                      updateTodoList.id
+                                    );
+                                    handleAdd();
+                                  }
+                                }}
+                              />
+                            ) : (
+                              <>
+                              
+                                <input
+                                  type="text"
+                                  className={classes.addTaskFiled}
+                                  placeholder="New Task.."
+                                  onFocus={handleInputFocus}
+                                  onBlur={handleInputBlur}
+                                  onChange={handleChangeTodo}
+                                  name="todo"
+                                  value={toDoList}
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                       submitToDoList();
                                     }
                                   }}
                                 />
-                              )}
-                            </div>
+                                {isInputFocused && (
+                                  <MdOutlineSubdirectoryArrowLeft 
+                                    className={classes.EnterIcon}
+                                    onClick={submitToDoList}
+                                  />
+                                )}
+                              </>
+                            )}
                           </div>
+                        </div> 
 
                           <div className={classes.countTaskClearAllMainDiv}>
                             <div
