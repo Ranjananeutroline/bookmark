@@ -205,6 +205,7 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
     border: "0px solid #F4F1F1",
     width: "100%",
+    borderRadius: "20px",
   },
 
   editTaskFiled: {
@@ -793,7 +794,7 @@ const handleInputBlur = () => {
 
                           <div className={classes.addNodeDiv}>
                             <div className={classes.addInputDiv}
-                            style={{ width: isInputFocused ? "200px" : "105px" }} // Conditional style
+                            style={{ width: isInputFocused ? "210px" : "105px" }} // Conditional style
                             >
                               {updateTodoList.List ||
                               updateTodoList.ToDoListId ? (
