@@ -211,9 +211,9 @@ const useStyles = makeStyles((theme) => ({
   },
 
   editTaskFiled: {
-    width: "16rem",
+    width: "100%",
     backgroundColor: "transparent",
-    padding: "0.5rem 0.2rem 0.5rem 1rem",
+    padding: "0.5rem 0.2rem 0.5rem 0.5rem",
     outline: "none",
     border: "0px solid #F4F1F1",
   },
@@ -278,7 +278,7 @@ export default function ToDoList() {
   const [highlightedTask, setHighlightedTask] = useState(null); // State for highlighted task
   const [taskPriorities, setTaskPriorities] = useState({}); // Keeps track of task priorities
   const [isInputFocused, setIsInputFocused] = useState(false);
-  
+  const [inputWidth, setInputWidth] = useState("105px");
 
   const handleEditMode = (e) => {
     setEditMode(e.target.value);
@@ -421,6 +421,8 @@ export default function ToDoList() {
     });
     changeIcon();
     setEditMode(List);
+    setInputWidth("220px"); // Expand input width when editing starts
+    setIsInputFocused(true); // Ensure input field is focused
   };
 
   const deleteItem = (TodoListId, ProfileId, id) => {
@@ -489,6 +491,7 @@ export default function ToDoList() {
     }
     document.getElementById("updateTodoList").value = "";
     setToDoList("");
+    setInputWidth("105px"); // Reset input width after submission
     getTodoList();
   };
   const clearAllItem = (id) => {
@@ -540,8 +543,11 @@ export default function ToDoList() {
   }, [open]);
 
   const handleAdd = () => {
-    setupdateTodoList("");
-    changeIcon();
+    setupdateTodoList(""); // Reset the todo list state
+    setEditMode(""); // Reset the edit mode state
+    setToDoList(""); // Reset the to-do list state (if applicable)
+    setIsInputFocused(false); // Reset the input field width to initial state
+    changeIcon(); // Call the changeIcon function
   };
 
 
@@ -723,7 +729,8 @@ const handleInputBlur = () => {
                                         {items.list !== "" ? items.List : ""}
                                         <span style={{
                                           color: 'red',
-                                          fontWeight: 'bold'
+                                          fontWeight: 'bold',
+                                          marginLeft: '0.5rem'
                                         }}>
                                           {taskPriorities[items.List] === 'high' ? ' !!!' :
                                             taskPriorities[items.List] === 'medium' ? ' !!' :
@@ -813,21 +820,21 @@ const handleInputBlur = () => {
                             {updateTodoList.List ||
                             updateTodoList.ToDoListId ? (
                               <>
-                                <FiEdit
-                                  style={{
-                                    color: "green",
-                                    fontSize: "0.9rem",
-                                  }}
-                                  onClick={() => {
-                                    updateTodoDb(
-                                      updateTodoList.ToDoListId,
-                                      updateTodoList.ProfileId,
-                                      updateTodoList.List,
-                                      updateTodoList.id
-                                    );
-                                    handleAdd();
-                                  }}
-                                />
+                                 <FiEdit
+                                    style={{
+                                      color: "green",
+                                      fontSize: "0.9rem",
+                                    }}
+                                    onClick={() => {
+                                      updateTodoDb(
+                                        updateTodoList.ToDoListId,
+                                        updateTodoList.ProfileId,
+                                        updateTodoList.List,
+                                        updateTodoList.id
+                                      );
+                                      handleAdd();
+                                    }}
+                                  />
                               </>
                             ) : (
                               <IoAddCircleSharp
@@ -838,11 +845,16 @@ const handleInputBlur = () => {
 
                             {updateTodoList.List ||
                             updateTodoList.ToDoListId ? (
+                              <>
                               <input
                                 id="updateTodoList"
                                 type="text"
                                 className={classes.editTaskFiled}
                                 value={editMode}
+                                onFocus={() => setIsInputFocused(true)}
+                                onBlur={() => {
+                                  if (!editMode) setIsInputFocused(false);
+                                }}
                                 onChange={handleEditMode}
                                 name="todo"
                                 onKeyDown={(e) => {
@@ -850,13 +862,28 @@ const handleInputBlur = () => {
                                     updateTodoDb(
                                       updateTodoList.ToDoListId,
                                       updateTodoList.ProfileId,
-                                      updateTodoList.List,
+                                      editMode,
                                       updateTodoList.id
                                     );
                                     handleAdd();
                                   }
                                 }}
                               />
+                              
+                              <MdOutlineSubdirectoryArrowLeft 
+                                className={classes.EnterIcon}
+                                onClick={() => {
+                                  updateTodoDb(
+                                    updateTodoList.ToDoListId,
+                                    updateTodoList.ProfileId,
+                                    editMode,
+                                    updateTodoList.id
+                                  );
+                                  handleAdd();
+                                }}
+                                />
+                              
+                              </>
                             ) : (
                               <>
                               
@@ -864,8 +891,10 @@ const handleInputBlur = () => {
                                   type="text"
                                   className={classes.addTaskFiled}
                                   placeholder="New Task.."
-                                  onFocus={handleInputFocus}
-                                  onBlur={handleInputBlur}
+                                  onFocus={() => setIsInputFocused(true)}
+                                  onBlur={() => {
+                                    if (!toDoList) setIsInputFocused(false);
+                                  }}
                                   onChange={handleChangeTodo}
                                   name="todo"
                                   value={toDoList}
